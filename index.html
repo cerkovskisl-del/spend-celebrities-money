@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Slavenību Naudas Simulators 4.0</title>
+    <title>Multiverse Slavenību Naudas Simulators 6.0</title>
     <style>
         :root {
             --primary: #2ecc71;
@@ -293,16 +293,21 @@
         <div class="header-controls">
             <button class="theme-btn" onclick="toggleTheme()">🌙 Tumšais</button>
         </div>
-        <h1>Slavenību Naudas Simulators 4.0 💸</h1>
+        <h1>Slavenību Naudas Simulators 6.0 💸</h1>
         <div class="selector-container">
             <img id="celeb-avatar" class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Elon" alt="Avatar">
             <select id="celebrity-select" onchange="changeCelebrity()">
+                <option value="mansa">Mansa Musa ($400,000,000,000,000)</option>
+                <option value="rokfellers">John D. Rockefeller ($340,000,000,000,000)</option>
                 <option value="elon">Elon Musk ($1,000,000,000,000)</option>
                 <option value="bezos">Jeff Bezos ($200,000,000,000)</option>
+                <option value="arnault">Bernard Arnault ($190,000,000,000)</option>
+                <option value="zuck">Mark Zuckerberg ($170,000,000,000)</option>
                 <option value="bill">Bill Gates ($105,000,000,000)</option>
                 <option value="mrbeast">MrBeast ($2,600,000,000)</option>
                 <option value="ronaldo">Cristiano Ronaldo ($3,000,000,000)</option>
                 <option value="taylor">Taylor Swift ($2,000,000,000)</option>
+                <option value="messi">Lionel Messi ($600,000,000)</option>
             </select>
             
             <div style="margin-left: 20px; display: inline-flex; gap: 5px;">
@@ -311,7 +316,7 @@
                 <button class="multiplier-btn" onclick="setMultiplier(100)" id="m100">x100</button>
             </div>
         </div>
-        <div id="money-counter">$1,000,000,000,000</div>
+        <div id="money-counter">$400,000,000,000,000</div>
         <div id="passive-income-counter">Pasīvie ienākumi: +$0 / sek</div>
         
         <div class="progress-container">
@@ -338,15 +343,20 @@
 
     <script>
         const celebrities = {
+            mansa: { balance: 400000000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Musa" },
+            rokfellers: { balance: 340000000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=John" },
             elon: { balance: 1000000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Elon" },
             bezos: { balance: 200000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Jeff" },
+            arnault: { balance: 190000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Bernard" },
+            zuck: { balance: 170000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Mark" },
             bill: { balance: 105000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Bill" },
             mrbeast: { balance: 2600000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Beast" },
             ronaldo: { balance: 3000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Ronaldo" },
-            taylor: { balance: 2000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Taylor" }
+            taylor: { balance: 2000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Taylor" },
+            messi: { balance: 600000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Messi" }
         };
 
-        let currentCelebrity = 'elon';
+        let currentCelebrity = 'mansa';
         let balance = celebrities[currentCelebrity].balance;
         let totalWealth = celebrities[currentCelebrity].balance;
         let currentMultiplier = 1;
@@ -354,17 +364,36 @@
         let passiveIncome = 0;
 
         const items = [
-            { id: 0, name: "🍔 Big Mac", price: 5, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" },
-            { id: 1, name: "📱 iPhone 16 Pro", price: 1200, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80" },
-            { id: 2, name: "🚗 Tesla Model Y", price: 50000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80" },
-            { id: 3, name: "🏎️ Bugatti Chiron", price: 3000000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1600706432502-75a0e2b3befe?auto=format&fit=crop&w=400&q=80" },
-            { id: 4, name: "🏠 Luksusa māja", price: 5000000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" },
-            { id: 5, name: "🍗 KFC franšīze", price: 15000000, passive: 2500, count: 0, img: "https://images.unsplash.com/photo-1513639776629-7b61b0ac23cb?auto=format&fit=crop&w=400&q=80" },
-            { id: 6, name: "🛩️ Privātā lidmašīna", price: 70000000, passive: -5000, count: 0, img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=400&q=80" },
-            { id: 7, name: "⚽ Real Madrid Klubs", price: 6000000000, passive: 450000, count: 0, img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=400&q=80" },
-            { id: 8, name: "🚀 Twitter (X)", price: 44000000000, passive: -2500000, count: 0, img: "https://images.unsplash.com/photo-1611605698335-8b15d27e83f9?auto=format&fit=crop&w=400&q=80" },
-            { id: 9, name: "📱 Visi pasaules iPhone", price: 150000000000, passive: 12000000, count: 0, img: "https://images.unsplash.com/photo-1556656793-08538906a9f8?auto=format&fit=crop&w=400&q=80" },
-            { id: 10, name: "🔴 Kolonizēt Marsu", price: 500000000000, passive: 50000000, count: 0, img: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80" }
+            { id: 0, name: "🍬 Košļājamā gumija", price: 1, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1575224300306-1b0ada9b6924?auto=format&fit=crop&w=400&q=80" },
+            { id: 1, name: "☕ Kafija", price: 4, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, name: "🍔 Big Mac", price: 5, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, name: "🍿 Kino biļete", price: 12, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=400&q=80" },
+            { id: 4, name: "📚 Grāmata", price: 20, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=400&q=80" },
+            { id: 5, name: "🎮 PS5 Pro", price: 800, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=400&q=80" },
+            { id: 6, name: "📱 iPhone 16 Pro", price: 1200, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80" },
+            { id: 7, name: "👟 Dizainera botes", price: 5000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" },
+            { id: 8, name: "🚗 Tesla Model Y", price: 50000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80" },
+            { id: 9, name: "💍 Dimanta gredzens", price: 100000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=400&q=80" },
+            { id: 10, name: "🏎️ Bugatti Chiron", price: 3000000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1600706432502-75a0e2b3befe?auto=format&fit=crop&w=400&q=80" },
+            { id: 11, name: "🏠 Luksusa māja", price: 5000000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" },
+            { id: 12, name: "🍗 KFC franšīze", price: 15000000, passive: 2500, count: 0, img: "https://images.unsplash.com/photo-1513639776629-7b61b0ac23cb?auto=format&fit=crop&w=400&q=80" },
+            { id: 13, name: "🛥️ Superjahta", price: 50000000, passive: -3000, count: 0, img: "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=400&q=80" },
+            { id: 14, name: "🛩️ Privātā lidmašīna", price: 70000000, passive: -5000, count: 0, img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=400&q=80" },
+            { id: 15, name: "🏙️ Debesskrāpis", price: 300000000, passive: 45000, count: 0, img: "https://images.unsplash.com/photo-1542362567-b07eac790abc?auto=format&fit=crop&w=400&q=80" },
+            { id: 16, name: "🖼️ Da Vinči glezna", price: 450000000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=400&q=80" },
+            { id: 17, name: "🛳️ Kruīza kuģis", price: 930000000, passive: 80000, count: 0, img: "https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=400&q=80" },
+            { id: 18, name: "⚽ Futbola Klubs", price: 4000000000, passive: 250000, count: 0, img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=400&q=80" },
+            { id: 19, name: "🚀 Twitter (X)", price: 44000000000, passive: -2500000, count: 0, img: "https://images.unsplash.com/photo-1611605698335-8b15d27e83f9?auto=format&fit=crop&w=400&q=80" },
+            { id: 20, name: "🛸 Kosmosa stacija ISS", price: 100000000000, passive: -800000, count: 0, img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80" },
+            { id: 21, name: "📱 Visi pasaules iPhone", price: 150000000000, passive: 12000000, count: 0, img: "https://images.unsplash.com/photo-1556656793-08538906a9f8?auto=format&fit=crop&w=400&q=80" },
+            { id: 22, name: "🔴 Kolonizēt Marsu", price: 500000000000, passive: 50000000, count: 0, img: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80" },
+            { id: 23, name: "🤖 AI Superdators", price: 2000000000000, passive: 350000000, count: 0, img: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=400&q=80" },
+            { id: 24, name: "⚡ Monako Karaliste", price: 8000000000000, passive: 900000000, count: 0, img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80" },
+            { id: 25, name: "🗺️ Neliela Eiropas valsts", price: 45000000000000, passive: 4000000000, count: 0, img: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=400&q=80" },
+            { id: 26, name: "🇺🇸 ASV Valsts parāds", price: 34000000000000, passive: -5000000000, count: 0, img: "https://images.unsplash.com/photo-1502920514313-52581002a659?auto=format&fit=crop&w=400&q=80" },
+            { id: 27, name: "🌍 Planēta Zeme", price: 100000000000000, passive: 15000000000, count: 0, img: "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=400&q=80" },
+            { id: 28, name: "☀️ Saules sistēma", price: 250000000000000, passive: 50000000000, count: 0, img: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=400&q=80" },
+            { id: 29, name: "🌌 Piena Ceļa Galaktika", price: 400000000000000, passive: 200000000000, count: 0, img: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=400&q=80" }
         ];
 
         const counterEl = document.getElementById('money-counter');
@@ -431,7 +460,6 @@
             }
         }
 
-        // Reāllaika pasīvo ienākumu cikls (katru sekundi)
         setInterval(() => {
             if (passiveIncome !== 0) {
                 balance += passiveIncome;
@@ -469,16 +497,15 @@
             calculatePassiveIncome();
             updateUI();
             
-            // Sasniegumu pārbaudes
             const spent = totalWealth - balance;
             if (spent > 0) triggerAchievement('first', '🍔', 'Pirmais pirkums izdarīts!');
-            if (balance <= 0) triggerAchievement('zero', '📉', 'Pilnīga nulle! Tu iztērēji pilnīgi visu!');
+            if (balance <= 0) triggerAchievement('zero', '📉', 'Pilnīga nulle! Tu iztērēji visu naudu!');
         });
 
         function updateUI() {
             counterEl.innerText = formatMoney(balance);
             const spent = totalWealth - balance;
-            const percentage = ((spent / totalWealth) * 100).toFixed(4);
+            const percentage = ((spent / totalWealth) * 100).toFixed(6);
             progressBarEl.style.width = `${Math.min(percentage, 100)}%`;
             progressTextEl.innerText = `Iztērēti ${percentage}% no kopējās bagātības`;
 
