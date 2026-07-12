@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iztērē Slavenību Naudu</title>
+    <title>Iztērē Slavenību Naudu 2.0</title>
     <style>
         :root {
             --primary: #2ecc71;
             --primary-hover: #27ae60;
             --danger: #e74c3c;
             --danger-hover: #c0392b;
-            --bg: #f8f9fa;
+            --bg: #f1f2f6;
             --text: #2d3436;
         }
 
@@ -26,7 +26,7 @@
         header {
             background: white;
             padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -34,7 +34,8 @@
 
         h1 {
             margin: 0 0 15px 0;
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 800;
         }
 
         .selector-container {
@@ -42,27 +43,29 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #dfe6e9;
+            border: 3px solid var(--primary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         select {
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 16px;
-            border-radius: 8px;
+            border-radius: 12px;
             border: 2px solid #dfe6e9;
             background-color: white;
             cursor: pointer;
             font-weight: bold;
             outline: none;
             transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         select:focus {
@@ -70,91 +73,129 @@
         }
 
         #money-counter {
-            font-size: 42px;
-            font-weight: 800;
+            font-size: 46px;
+            font-weight: 900;
             color: var(--primary);
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #dfe6e9;
+            border-radius: 10px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 15px;
+            background: linear-gradient(90deg, #2ecc71, #3498db);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-top: 5px;
         }
 
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
-            max-width: 1200px;
-            margin: 30px auto;
+            gap: 30px;
+            max-width: 1280px;
+            margin: 40px auto;
             padding: 0 20px;
         }
 
         .item-card {
             background: white;
-            border-radius: 16px;
-            padding: 25px;
-            width: 240px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.03);
+            border-radius: 20px;
+            overflow: hidden;
+            width: 260px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.06);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .item-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .item-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
         }
 
         .item-name { 
             font-weight: 700; 
             font-size: 20px; 
-            margin-bottom: 8px; 
+            margin-bottom: 6px; 
         }
 
         .item-price { 
             color: var(--danger); 
-            font-size: 16px; 
-            font-weight: 600;
+            font-size: 17px; 
+            font-weight: 700;
             margin-bottom: 15px; 
         }
 
         .item-count { 
             font-size: 14px; 
-            color: #b2bec3; 
+            color: #2c3e50; 
             margin-bottom: 20px; 
-            background: #f1f2f6;
-            padding: 4px 12px;
+            background: #eef2f3;
+            padding: 5px 16px;
             border-radius: 20px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .btn-group {
             display: flex;
             gap: 12px;
             width: 100%;
+            margin-top: auto;
         }
 
         button {
             flex: 1;
             border: none;
-            padding: 12px;
+            padding: 14px;
             font-size: 15px;
             cursor: pointer;
-            border-radius: 8px;
-            transition: 0.2s;
+            border-radius: 10px;
+            transition: all 0.2s ease;
             font-weight: bold;
         }
 
-        .btn-buy { background-color: var(--primary); color: white; }
-        .btn-buy:hover { background-color: var(--primary-hover); }
+        .btn-buy { background-color: var(--primary); color: white; box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2); }
+        .btn-buy:hover:not(:disabled) { background-color: var(--primary-hover); }
         
-        .btn-sell { background-color: #dfe6e9; color: #636e72; }
-        .btn-sell:hover:not(:disabled) { background-color: var(--danger); color: white; }
+        .btn-sell { background-color: #f1f2f6; color: #57606f; }
+        .btn-sell:hover:not(:disabled) { background-color: var(--danger); color: white; box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2); }
         
         button:disabled { 
             background-color: #e9ecef; 
             color: #ced4da;
+            box-shadow: none;
             cursor: not-allowed; 
-            transform: none !important;
         }
         
         button:active:not(:disabled) { transform: scale(0.95); }
@@ -167,43 +208,51 @@
         <div class="selector-container">
             <img id="celeb-avatar" class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Elon" alt="Avatar">
             <select id="celebrity-select" onchange="changeCelebrity()">
-                <option value="elon">Elon Musk ($268,000,000,000)</option>
+                <option value="elon">Elon Musk ($1,000,000,000,000)</option>
                 <option value="bill">Bill Gates ($105,000,000,000)</option>
-                <option value="taylor">Taylor Swift ($1,300,000,000)</option>
+                <option value="taylor">Taylor Swift ($2,000,000,000)</option>
             </select>
         </div>
-        <div id="money-counter">$268,000,000,000</div>
+        <div id="money-counter">$1,000,000,000,000</div>
+        
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div id="progress-text" class="progress-text">Iztērēti 0% no kopējās bagātības</div>
     </header>
 
     <div class="container" id="shop-container"></div>
 
     <script>
-        // Precīzie un atjauninātie dati par slavenību kapitālu
         const celebrities = {
-            elon: { balance: 268000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Elon" },
+            elon: { balance: 1000000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Elon" },
             bill: { balance: 105000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Bill" },
-            taylor: { balance: 1300000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Taylor" }
+            taylor: { balance: 2000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Taylor" }
         };
 
         let currentCelebrity = 'elon';
         let balance = celebrities[currentCelebrity].balance;
+        let totalWealth = celebrities[currentCelebrity].balance;
 
-        // Preču saraksts
         const items = [
-            { id: 0, name: "🍔 Big Mac", price: 5, count: 0 },
-            { id: 1, name: "📱 iPhone 16 Pro", price: 1200, count: 0 },
-            { id: 2, name: "🚗 Tesla Model Y", price: 50000, count: 0 },
-            { id: 3, name: "🏠 Luksusa māja", price: 5000000, count: 0 },
-            { id: 4, name: "🍗 KFC franšīze", price: 15000000, count: 0 },
-            { id: 5, name: "🛩️ Privātā lidmašīna", price: 70000000, count: 0 },
-            { id: 6, name: "🖼️ Mona Lizas glezna", price: 900000000, count: 0 },
-            { id: 7, name: "🚀 Twitter (X)", price: 44000000000, count: 0 }
+            { id: 0, name: "🍔 Big Mac", price: 5, count: 0, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" },
+            { id: 1, name: "📱 iPhone 16 Pro", price: 1200, count: 0, img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, name: "🚗 Tesla Model Y", price: 50000, count: 0, img: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, name: "🏠 Luksusa māja", price: 5000000, count: 0, img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" },
+            { id: 4, name: "🍗 KFC franšīze", price: 15000000, count: 0, img: "https://images.unsplash.com/photo-1513639776629-7b61b0ac23cb?auto=format&fit=crop&w=400&q=80" },
+            { id: 5, name: "🛩️ Privātā lidmašīna", price: 70000000, count: 0, img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=400&q=80" },
+            { id: 6, name: "🖼️ Mona Lizas glezna", price: 900000000, count: 0, img: "https://images.unsplash.com/photo-1580136579312-94651dfd596d?auto=format&fit=crop&w=400&q=80" },
+            { id: 7, name: "🚀 Twitter (X)", price: 44000000000, count: 0, img: "https://images.unsplash.com/photo-1611605698335-8b15d27e83f9?auto=format&fit=crop&w=400&q=80" },
+            { id: 8, name: "📱 Visi pasaules iPhone", price: 150000000000, count: 0, img: "https://images.unsplash.com/photo-1556656793-08538906a9f8?auto=format&fit=crop&w=400&q=80" },
+            { id: 9, name: "🔴 Kolonizēt Marsu", price: 500000000000, count: 0, img: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80" }
         ];
 
         const counterEl = document.getElementById('money-counter');
         const containerEl = document.getElementById('shop-container');
         const selectEl = document.getElementById('celebrity-select');
         const avatarEl = document.getElementById('celeb-avatar');
+        const progressBarEl = document.getElementById('progress-bar');
+        const progressTextEl = document.getElementById('progress-text');
 
         function formatMoney(num) {
             return "$" + num.toLocaleString('en-US');
@@ -212,62 +261,71 @@
         function changeCelebrity() {
             currentCelebrity = selectEl.value;
             balance = celebrities[currentCelebrity].balance;
+            totalWealth = celebrities[currentCelebrity].balance;
             avatarEl.src = celebrities[currentCelebrity].img;
             
-            // Atiestata visus pirkumus mainot tēlu
             items.forEach(item => item.count = 0);
-            
             updateUI();
         }
+
+        document.addEventListener('click', function(e) {
+            if(e.target && e.target.classList.contains('btn-buy')) {
+                const id = parseInt(e.target.dataset.id);
+                const item = items.find(i => i.id === id);
+                if (balance >= item.price) {
+                    balance -= item.price;
+                    item.count++;
+                    updateUI();
+                }
+            }
+            if(e.target && e.target.classList.contains('btn-sell')) {
+                const id = parseInt(e.target.dataset.id);
+                const item = items.find(i => i.id === id);
+                if (item.count > 0) {
+                    balance += item.price;
+                    item.count--;
+                    updateUI();
+                }
+            }
+        });
 
         function updateUI() {
             counterEl.innerText = formatMoney(balance);
             
+            // Aprēķina un atjauno progresa joslu
+            const spent = totalWealth - balance;
+            const percentage = ((spent / totalWealth) * 100).toFixed(4);
+            progressBarEl.style.width = `${Math.min(percentage, 100)}%`;
+            progressTextEl.innerText = `Iztērēti ${percentage}% no kopējās bagātības`;
+
             items.forEach(item => {
                 const countEl = document.getElementById(`count-${item.id}`);
                 const sellBtn = document.getElementById(`sell-${item.id}`);
                 const buyBtn = document.getElementById(`buy-${item.id}`);
                 
                 countEl.innerText = `Nopirkts: ${item.count}`;
-                
                 sellBtn.disabled = item.count <= 0;
                 buyBtn.disabled = balance < item.price;
             });
         }
 
-        function buyItem(id) {
-            const item = items.find(i => i.id === id);
-            if (balance >= item.price) {
-                balance -= item.price;
-                item.count++;
-                updateUI();
-            }
-        }
-
-        function sellItem(id) {
-            const item = items.find(i => i.id === id);
-            if (item.count > 0) {
-                balance += item.price;
-                item.count--;
-                updateUI();
-            }
-        }
-
-        // Izveido veikalu
+        // Izveido spēles elementus
         items.forEach(item => {
             const card = document.createElement('div');
             card.className = 'item-card';
             
             card.innerHTML = `
-                <div class="item-name">${item.name}</div>
-                <div class="item-price">${formatMoney(item.price)}</div>
-                <div class="item-count" id="count-${item.id}">Nopirkts: 0</div>
-                <div class="btn-group">
-                    <button class="btn-sell" id="sell-${item.id}" onclick="sellItem(${item.id})">Pārdot</button>
-                    <button class="btn-buy" id="buy-${item.id}" onclick="buyItem(${item.id})">Pirkt</button>
+                <img class="item-img" src="${item.img}" alt="${item.name}">
+                <div class="item-info">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">${formatMoney(item.price)}</div>
+                    <div class="item-count" id="count-${item.id}">Nopirkts: 0</div>
+                    <div class="btn-group">
+                        <button class="btn-sell" id="sell-${item.id}" data-id="${item.id}">Pārdot</button>
+                        <button class="btn-buy" id="buy-${item.id}" data-id="${item.id}">Pirkt</button>
+                    </div>
                 </div>
             `;
-            
             containerEl.appendChild(card);
         });
 
