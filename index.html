@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Slavenību Naudas Simulators</title>
+    <title>Ultimate Slavenību Naudas Simulators 4.0</title>
     <style>
         :root {
             --primary: #2ecc71;
@@ -11,7 +11,20 @@
             --danger: #e74c3c;
             --danger-hover: #c0392b;
             --bg: #f5f6fa;
+            --card-bg: white;
             --text: #2f3640;
+            --accent: #9b59b6;
+            --header-bg: white;
+            --border: #dfe6e9;
+            --income: #27ae60;
+        }
+
+        [data-theme="dark"] {
+            --bg: #1e272e;
+            --card-bg: #2f3640;
+            --text: #f5f6fa;
+            --header-bg: #2f3640;
+            --border: #718093;
         }
 
         body {
@@ -21,21 +34,40 @@
             color: var(--text);
             margin: 0;
             padding: 0;
+            transition: background 0.3s, color 0.3s;
         }
 
         header {
-            background: white;
+            background: var(--header-bg);
             padding: 25px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: background 0.3s;
         }
 
         h1 {
             margin: 0 0 15px 0;
             font-size: 32px;
             font-weight: 800;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+        }
+
+        .theme-btn {
+            background: none;
+            border: 2px solid var(--border);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--text);
+            font-weight: bold;
+            transition: 0.2s;
         }
 
         .selector-container {
@@ -60,8 +92,9 @@
             padding: 12px 25px;
             font-size: 16px;
             border-radius: 12px;
-            border: 2px solid #dfe6e9;
-            background-color: white;
+            border: 2px solid var(--border);
+            background-color: var(--card-bg);
+            color: var(--text);
             cursor: pointer;
             font-weight: bold;
             outline: none;
@@ -78,7 +111,16 @@
             font-size: 46px;
             font-weight: 900;
             color: var(--primary);
+            margin-bottom: 5px;
+            transition: transform 0.1s ease;
+        }
+
+        #passive-income-counter {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--income);
             margin-bottom: 15px;
+            height: 20px;
         }
 
         .progress-container {
@@ -116,15 +158,15 @@
         }
 
         .item-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             overflow: hidden;
-            width: 280px;
+            width: 300px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border: 1px solid rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
         }
 
         .item-card:hover {
@@ -156,14 +198,22 @@
             color: var(--danger); 
             font-size: 17px; 
             font-weight: 700;
-            margin-bottom: 15px; 
+            margin-bottom: 4px; 
+        }
+
+        .item-passive {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--income);
+            margin-bottom: 12px;
+            height: 15px;
         }
 
         .item-count { 
             font-size: 14px; 
-            color: #2c3e50; 
+            color: var(--text); 
             margin-bottom: 20px; 
-            background: #eef2f3;
+            background: rgba(0,0,0,0.05);
             padding: 5px 16px;
             border-radius: 20px;
             font-weight: 700;
@@ -171,40 +221,79 @@
 
         .btn-group {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             width: 100%;
             margin-top: auto;
         }
 
         button.action-btn {
-            flex: 1;
             border: none;
-            padding: 14px;
-            font-size: 15px;
+            padding: 12px 8px;
+            font-size: 14px;
             cursor: pointer;
             border-radius: 10px;
             transition: all 0.2s ease;
             font-weight: bold;
         }
 
-        .btn-buy { background-color: var(--primary); color: white; box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2); }
+        .btn-buy { flex: 2; background-color: var(--primary); color: white; }
         .btn-buy:hover:not(:disabled) { background-color: var(--primary-hover); }
         
-        .btn-sell { background-color: #f1f2f6; color: #57606f; }
-        .btn-sell:hover:not(:disabled) { background-color: var(--danger); color: white; box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2); }
+        .btn-sell { flex: 2; background-color: rgba(0,0,0,0.05); color: var(--text); }
+        .btn-sell:hover:not(:disabled) { background-color: var(--danger); color: white; }
+
+        .btn-max { flex: 1; background-color: #e67e22; color: white; }
+        .btn-max:hover:not(:disabled) { background-color: #d35400; }
         
         button:disabled { 
-            background-color: #e9ecef; 
-            color: #ced4da;
-            box-shadow: none;
+            background-color: #ced4da !important; 
+            color: #6c757d !important;
             cursor: not-allowed; 
         }
+
+        .achievement-toast {
+            position: fixed;
+            bottom: -100px;
+            right: 20px;
+            background: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            border-left: 5px solid var(--accent);
+        }
+
+        .achievement-toast.show { bottom: 20px; }
+        .achievement-icon { font-size: 30px; }
+        .achievement-title { font-weight: bold; color: #f1c40f; font-size: 14px; text-transform: uppercase; }
+
+        .receipt-container {
+            background: var(--card-bg);
+            max-width: 450px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px dashed var(--border);
+            display: none;
+        }
+        .receipt-title { font-size: 24px; font-weight: 800; margin-bottom: 20px; }
+        .receipt-item { display: flex; justify-content: space-between; margin: 10px 0; font-weight: 600; }
+        .receipt-total { border-top: 2px solid var(--border); margin-top: 15px; padding-top: 15px; font-size: 20px; font-weight: 800; color: var(--primary); }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Mega Slavenību Naudas Simulators 💸</h1>
+        <div class="header-controls">
+            <button class="theme-btn" onclick="toggleTheme()">🌙 Tumšais</button>
+        </div>
+        <h1>Slavenību Naudas Simulators 4.0 💸</h1>
         <div class="selector-container">
             <img id="celeb-avatar" class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Elon" alt="Avatar">
             <select id="celebrity-select" onchange="changeCelebrity()">
@@ -223,6 +312,7 @@
             </div>
         </div>
         <div id="money-counter">$1,000,000,000,000</div>
+        <div id="passive-income-counter">Pasīvie ienākumi: +$0 / sek</div>
         
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
@@ -232,8 +322,21 @@
 
     <div class="container" id="shop-container"></div>
 
+    <div class="receipt-container" id="receipt">
+        <div class="receipt-title">🧾 Tavs Pirkumu Čeks</div>
+        <div id="receipt-items"></div>
+        <div class="receipt-total" id="receipt-total">Kopā: $0</div>
+    </div>
+
+    <div id="achievement-toast" class="achievement-toast">
+        <div class="achievement-icon" id="ach-icon">🏆</div>
+        <div>
+            <div class="achievement-title">Sasniegums atbloķēts!</div>
+            <div id="ach-desc">Pirmais pirkums izdarīts!</div>
+        </div>
+    </div>
+
     <script>
-        // MrBeast vērtība atjaunināta uz $2,600,000,000
         const celebrities = {
             elon: { balance: 1000000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Elon" },
             bezos: { balance: 200000000000, img: "https://api.dicebear.com/7.x/adventurer/svg?seed=Jeff" },
@@ -247,30 +350,56 @@
         let balance = celebrities[currentCelebrity].balance;
         let totalWealth = celebrities[currentCelebrity].balance;
         let currentMultiplier = 1;
+        let unlockedAchievements = new Set();
+        let passiveIncome = 0;
 
         const items = [
-            { id: 0, name: "🍔 Big Mac", price: 5, count: 0, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" },
-            { id: 1, name: "📱 iPhone 16 Pro", price: 1200, count: 0, img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80" },
-            { id: 2, name: "🚗 Tesla Model Y", price: 50000, count: 0, img: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80" },
-            { id: 3, name: "🏎️ Bugatti Chiron", price: 3000000, count: 0, img: "https://images.unsplash.com/photo-1600706432502-75a0e2b3befe?auto=format&fit=crop&w=400&q=80" },
-            { id: 4, name: "🏠 Luksusa māja", price: 5000000, count: 0, img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" },
-            { id: 5, name: "🍗 KFC franšīze", price: 15000000, count: 0, img: "https://images.unsplash.com/photo-1513639776629-7b61b0ac23cb?auto=format&fit=crop&w=400&q=80" },
-            { id: 6, name: "🛩️ Privātā lidmašīna", price: 70000000, count: 0, img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=400&q=80" },
-            { id: 7, name: "⚽ Real Madrid Klubs", price: 6000000000, count: 0, img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=400&q=80" },
-            { id: 8, name: "🚀 Twitter (X)", price: 44000000000, count: 0, img: "https://images.unsplash.com/photo-1611605698335-8b15d27e83f9?auto=format&fit=crop&w=400&q=80" },
-            { id: 9, name: "📱 Visi pasaules iPhone", price: 150000000000, count: 0, img: "https://images.unsplash.com/photo-1556656793-08538906a9f8?auto=format&fit=crop&w=400&q=80" },
-            { id: 10, name: "🔴 Kolonizēt Marsu", price: 500000000000, count: 0, img: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80" }
+            { id: 0, name: "🍔 Big Mac", price: 5, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" },
+            { id: 1, name: "📱 iPhone 16 Pro", price: 1200, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, name: "🚗 Tesla Model Y", price: 50000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, name: "🏎️ Bugatti Chiron", price: 3000000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1600706432502-75a0e2b3befe?auto=format&fit=crop&w=400&q=80" },
+            { id: 4, name: "🏠 Luksusa māja", price: 5000000, passive: 0, count: 0, img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" },
+            { id: 5, name: "🍗 KFC franšīze", price: 15000000, passive: 2500, count: 0, img: "https://images.unsplash.com/photo-1513639776629-7b61b0ac23cb?auto=format&fit=crop&w=400&q=80" },
+            { id: 6, name: "🛩️ Privātā lidmašīna", price: 70000000, passive: -5000, count: 0, img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=400&q=80" },
+            { id: 7, name: "⚽ Real Madrid Klubs", price: 6000000000, passive: 450000, count: 0, img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=400&q=80" },
+            { id: 8, name: "🚀 Twitter (X)", price: 44000000000, passive: -2500000, count: 0, img: "https://images.unsplash.com/photo-1611605698335-8b15d27e83f9?auto=format&fit=crop&w=400&q=80" },
+            { id: 9, name: "📱 Visi pasaules iPhone", price: 150000000000, passive: 12000000, count: 0, img: "https://images.unsplash.com/photo-1556656793-08538906a9f8?auto=format&fit=crop&w=400&q=80" },
+            { id: 10, name: "🔴 Kolonizēt Marsu", price: 500000000000, passive: 50000000, count: 0, img: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80" }
         ];
 
         const counterEl = document.getElementById('money-counter');
+        const incomeCounterEl = document.getElementById('passive-income-counter');
         const containerEl = document.getElementById('shop-container');
         const selectEl = document.getElementById('celebrity-select');
         const avatarEl = document.getElementById('celeb-avatar');
         const progressBarEl = document.getElementById('progress-bar');
         const progressTextEl = document.getElementById('progress-text');
+        const toastEl = document.getElementById('achievement-toast');
+        const achDescEl = document.getElementById('ach-desc');
+        const achIconEl = document.getElementById('ach-icon');
+        const receiptEl = document.getElementById('receipt');
+        const receiptItemsEl = document.getElementById('receipt-items');
+        const receiptTotalEl = document.getElementById('receipt-total');
 
-        function formatMoney(num) {
-            return "$" + num.toLocaleString('en-US');
+        function formatMoney(num) { 
+            return (num < 0 ? "-$" : "$") + Math.abs(num).toLocaleString('en-US'); 
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', targetTheme);
+            document.querySelector('.theme-btn').innerText = targetTheme === 'dark' ? '☀️ Gaišais' : '🌙 Tumšais';
+        }
+
+        function triggerAchievement(id, icon, description) {
+            if (!unlockedAchievements.has(id)) {
+                unlockedAchievements.add(id);
+                achIconEl.innerText = icon;
+                achDescEl.innerText = description;
+                toastEl.classList.add('show');
+                setTimeout(() => toastEl.classList.remove('show'), 4000);
+            }
         }
 
         function setMultiplier(val) {
@@ -285,66 +414,115 @@
             balance = celebrities[currentCelebrity].balance;
             totalWealth = celebrities[currentCelebrity].balance;
             avatarEl.src = celebrities[currentCelebrity].img;
-            
             items.forEach(item => item.count = 0);
+            unlockedAchievements.clear();
+            calculatePassiveIncome();
             updateUI();
         }
 
+        function calculatePassiveIncome() {
+            passiveIncome = items.reduce((total, item) => total + (item.count * item.passive), 0);
+            if(passiveIncome !== 0) {
+                incomeCounterEl.innerText = `Pasīvie ienākumi: ${passiveIncome > 0 ? '+' : ''}${formatMoney(passiveIncome)} / sek`;
+                incomeCounterEl.style.color = passiveIncome > 0 ? "var(--income)" : "var(--danger)";
+            } else {
+                incomeCounterEl.innerText = `Pasīvie ienākumi: $0 / sek`;
+                incomeCounterEl.style.color = "var(--text)";
+            }
+        }
+
+        // Reāllaika pasīvo ienākumu cikls (katru sekundi)
+        setInterval(() => {
+            if (passiveIncome !== 0) {
+                balance += passiveIncome;
+                if(balance < 0) balance = 0;
+                updateUI();
+            }
+        }, 1000);
+
         document.addEventListener('click', function(e) {
-            if(e.target && e.target.classList.contains('btn-buy')) {
-                const id = parseInt(e.target.dataset.id);
-                const item = items.find(i => i.id === id);
+            if(!e.target.classList.contains('action-btn')) return;
+            const id = parseInt(e.target.dataset.id);
+            const item = items.find(i => i.id === id);
+
+            if(e.target.classList.contains('btn-buy')) {
                 const totalCost = item.price * currentMultiplier;
                 if (balance >= totalCost) {
                     balance -= totalCost;
                     item.count += currentMultiplier;
-                    updateUI();
                 }
-            }
-            if(e.target && e.target.classList.contains('btn-sell')) {
-                const id = parseInt(e.target.dataset.id);
-                const item = items.find(i => i.id === id);
+            } else if(e.target.classList.contains('btn-sell')) {
                 const sellAmount = Math.min(item.count, currentMultiplier);
-                if (sellAmount > 0) {
-                    balance += item.price * sellAmount;
-                    item.count -= sellAmount;
-                    updateUI();
+                balance += item.price * sellAmount;
+                item.count -= sellAmount;
+            } else if(e.target.classList.contains('btn-max')) {
+                const maxBuy = Math.floor(balance / item.price);
+                if(maxBuy > 0) {
+                    balance -= item.price * maxBuy;
+                    item.count += maxBuy;
                 }
             }
+
+            counterEl.style.transform = "scale(1.03)";
+            setTimeout(() => counterEl.style.transform = "scale(1)", 100);
+            
+            calculatePassiveIncome();
+            updateUI();
+            
+            // Sasniegumu pārbaudes
+            const spent = totalWealth - balance;
+            if (spent > 0) triggerAchievement('first', '🍔', 'Pirmais pirkums izdarīts!');
+            if (balance <= 0) triggerAchievement('zero', '📉', 'Pilnīga nulle! Tu iztērēji pilnīgi visu!');
         });
 
         function updateUI() {
             counterEl.innerText = formatMoney(balance);
-            
             const spent = totalWealth - balance;
             const percentage = ((spent / totalWealth) * 100).toFixed(4);
             progressBarEl.style.width = `${Math.min(percentage, 100)}%`;
             progressTextEl.innerText = `Iztērēti ${percentage}% no kopējās bagātības`;
 
             items.forEach(item => {
-                const countEl = document.getElementById(`count-${item.id}`);
-                const sellBtn = document.getElementById(`sell-${item.id}`);
-                const buyBtn = document.getElementById(`buy-${item.id}`);
-                
-                countEl.innerText = `Nopirkts: ${item.count}`;
-                sellBtn.disabled = item.count <= 0;
-                buyBtn.disabled = balance < (item.price * currentMultiplier);
+                document.getElementById(`count-${item.id}`).innerText = `Nopirkts: ${item.count}`;
+                document.getElementById(`sell-${item.id}`).disabled = item.count <= 0;
+                document.getElementById(`buy-${item.id}`).disabled = balance < (item.price * currentMultiplier);
+                document.getElementById(`max-${item.id}`).disabled = balance < item.price;
             });
+
+            receiptItemsEl.innerHTML = '';
+            let hasItems = false;
+            items.forEach(item => {
+                if(item.count > 0) {
+                    hasItems = true;
+                    const div = document.createElement('div');
+                    div.className = 'receipt-item';
+                    div.innerHTML = `<span>${item.name} x${item.count}</span> <span>${formatMoney(item.price * item.count)}</span>`;
+                    receiptItemsEl.appendChild(div);
+                }
+            });
+            receiptEl.style.display = hasItems ? 'block' : 'none';
+            receiptTotalEl.innerText = `Kopā iztērēts: ${formatMoney(spent)}`;
         }
 
         items.forEach(item => {
             const card = document.createElement('div');
             card.className = 'item-card';
             
+            let passiveText = '';
+            if(item.passive > 0) passiveText = `+${formatMoney(item.passive)}/sek`;
+            if(item.passive < 0) passiveText = `-${formatMoney(Math.abs(item.passive))}/sek`;
+
             card.innerHTML = `
                 <img class="item-img" src="${item.img}" alt="${item.name}">
                 <div class="item-info">
                     <div class="item-name">${item.name}</div>
                     <div class="item-price">${formatMoney(item.price)}</div>
+                    <div class="item-passive">${passiveText}</div>
                     <div class="item-count" id="count-${item.id}">Nopirkts: 0</div>
                     <div class="btn-group">
                         <button class="action-btn btn-sell" id="sell-${item.id}" data-id="${item.id}">Pārdot</button>
                         <button class="action-btn btn-buy" id="buy-${item.id}" data-id="${item.id}">Pirkt</button>
+                        <button class="action-btn btn-max" id="max-${item.id}" data-id="${item.id}">MAX</button>
                     </div>
                 </div>
             `;
