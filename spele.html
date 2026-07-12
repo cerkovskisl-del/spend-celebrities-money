@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iztērē Ilona Maska Naudu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { color: #333; }
+        #money-counter {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2ecc71;
+            background: #fff;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .item-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .item-name { font-weight: bold; font-size: 18px; margin-bottom: 5px; }
+        .item-price { color: #e74c3c; font-size: 16px; margin-bottom: 15px; }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+        button:hover { background-color: #2980b9; }
+        button:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+
+    <h1>Iztērē Ilona Maska Naudu! 🚀</h1>
+    <div id="money-counter">$200,000,000,000</div>
+
+    <div class="container" id="shop-container">
+        </div>
+
+    <script>
+        // Sākuma budžets (200 miljardi)
+        let balance = 200000000000;
+
+        // Preču saraksts
+        const items = [
+            { name: "🍔 Big Mac", price: 5 },
+            { name: "📱 iPhone 16 Pro", price: 1200 },
+            { name: "🚗 Tesla Model Y", price: 50000 },
+            { name: "🏠 Luksusa māja", price: 5000000 },
+            { name: "🛩️ Privātā lidmašīna", price: 70000000 },
+            { name: "🚀 SpaceX Raķete", price: 150000000 },
+            { name: "🚀 Twitter (X)", price: 44000000000 }
+        ];
+
+        const counterEl = document.getElementById('money-counter');
+        const containerEl = document.getElementById('shop-container');
+
+        // Funkcija naudas formātam
+        function formatMoney(num) {
+            return "$" + num.toLocaleString('en-US');
+        }
+
+        // Funkcija preces pirkšanai
+        function buyItem(price) {
+            if (balance >= price) {
+                balance -= price;
+                counterEl.innerText = formatMoney(balance);
+                if (balance === 0) {
+                    alert("Apsveicu! Tu iztērēji visu Ilona naudu!");
+                }
+            } else {
+                alert("Tev nepietiek naudas šim pirkumam!");
+            }
+        }
+
+        // Izveidojam preču kartiņas ekrānā
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            
+            card.innerHTML = `
+                <div class="item-name">${item.name}</div>
+                <div class="item-price">${formatMoney(item.price)}</div>
+                <button onclick="buyItem(${item.price})">Pirkt</button>
+            `;
+            
+            containerEl.appendChild(card);
+        });
+    </script>
+</body>
+</html>
